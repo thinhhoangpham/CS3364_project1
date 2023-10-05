@@ -6,7 +6,7 @@
 #define SOURCES 5
 #define SOURCE_NUM 10000
 
-int sources[SOURCES][SOURCE_NUM];
+struct Element sources[SOURCES][SOURCE_NUM];
 struct Element sums[SOURCE_NUM];
 int invCount = 0;
 
@@ -28,16 +28,19 @@ int main() {
         //read file
 		myFile = fopen(name, "r");				// open file with file name matches name string
 		for (int j = 0; j < SOURCE_NUM; j++) {		// loop to read file line by line to array
-			fscanf(myFile, "%d", &sources[i][j]);
+			fscanf(myFile, "%d", &sources[i][j].v);
+			sources[i][j].p = j;
 		}
     }
 
-    for (int i = 0; i < SOURCE_NUM; i++) {
-        for (int j = 0; j < SOURCES; j++) {
-            printf("%d \t", sources[j][i]);
-        }
-        printf("\n");
-    }
+	// print first 20 entries of sources
+	for (int j = 0; j < 20; j++) {
+		for (int i = 0; i < SOURCES; i++) {
+			printf("%d \t", sources[i][j].p);
+			printf("%d \t", sources[i][j].v);
+		}
+		printf("\n");
+	}
 
     // Step 1: Sum of sources
     for (int i = 0; i < SOURCE_NUM; i++) {
@@ -46,12 +49,12 @@ int main() {
         sum.v = 0;
         for (int j = 0; j < SOURCES; j++) {
             sum.p = i;
-            sum.v += sources[j][i];
+            sum.v += sources[j][i].v;
         }
         sums[i] = sum;
     }
-    // print out sums
-    for (int i = 0; i < SOURCE_NUM; i++) {
+    // print out first 20 entries of sums
+    for (int i = 0; i < 20; i++) {
         printf("%d, %d\n", sums[i].p, sums[i].v);
     }
 
@@ -59,11 +62,25 @@ int main() {
 
     // Step 2: sort sums
     struct Element* sortedSums = mergeSort(sums, SOURCE_NUM);
-    // print out sorted sums
-    for (int i = 0; i < SOURCE_NUM; i++) {
+    // print out first 20 entries of sorted sums
+    for (int i = 0; i < 20; i++) {
         printf("%d, %d\n", sortedSums[i].p, sortedSums[i].v);
     }
 
 	// Step 3: Adjustment
+    struct Element adj_sources[SOURCES][SOURCE_NUM];
+    for (int i = 0; i < SOURCES; i++) {
+        for (int j = 0; j < SOURCE_NUM; j++) {
+            adj_sources[i][j] = sources[i][sortedSums[j].p];
+        }
+    }
+    // print first 20 entries of adjusted sources
+	for (int j = 0; j < 20; j++) {
+		for (int i = 0; i < SOURCES; i++) {
+			printf("%d \t", adj_sources[i][j].p);
+			printf("%d \t", adj_sources[i][j].v);
+		}
+		printf("\n");
+	}
 
 }

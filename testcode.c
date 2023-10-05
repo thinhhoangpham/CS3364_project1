@@ -1,3 +1,5 @@
+// This is code to test and debug function before implementing to main project code
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -8,7 +10,7 @@
 
 int sources[SOURCES][SOURCE_NUM];
 struct Element sums[SOURCE_NUM];
-int invCount = 0;
+
 
 int main() {
 
@@ -60,15 +62,37 @@ int main() {
 
     printf("-----------\n");
 
-    // Sort
+    // Sort sums
     struct Element* sortedSums = mergeSort(sums, 10);
+    // print out sorted sums
     for (int i = 0; i < 10; i++) {
         printf("%d \t%d\n", sortedSums[i].p, sortedSums[i].v);
     }
+    printf("-----------\n");
 
     // Adjustment
-    
+    struct Element s_arr1[10], s_arr2[10], s_arr3[10];
+    for (int i = 0; i < 10; i++) {
+        s_arr1[i] = arr1[sortedSums[i].p];
+        s_arr2[i] = arr2[sortedSums[i].p];
+        s_arr3[i] = arr3[sortedSums[i].p];
+    }
+    // print out adjusted array1
+    for (int i = 0; i < 10; i++) {
+        printf("%d \t%d\n", s_arr1[i].p, s_arr1[i].v);
+    }
+    printf("-----------\n");
 
+    // inversion count for arr1
+    int invCount = 0;
+    struct Element* c_arr1 = qsInvCnt(s_arr1, 10, &invCount);
+    for (int i = 0; i < 10; i++) {
+        printf("%d \t%d\n", c_arr1[i].p, c_arr1[i].v);
+    }
+    printf("-----------\n");
+    printf("inversions Array1: %d\n", invCount);
+
+    return 0;
     
 }
 

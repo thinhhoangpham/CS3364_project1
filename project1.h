@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+// Structure for element in array
 struct Element {
 	int p;
 	int v;
@@ -130,8 +132,7 @@ struct Element* concat(struct Element a[], int lenA, struct Element b[], int len
 // INVERSION COUNT ALGORITHMS
 
 // 1. MERGE SORT INVERSION COUNT
-void mrgInvCnt(struct Element L[], struct Element R[], int lenL, int lenR, struct Element merged[]) {
-	extern int invCount;
+void mrgInvCnt(struct Element L[], struct Element R[], int lenL, int lenR, struct Element merged[], int* invCount) {
 	int combLen = lenL + lenR;
 	int i = 0, j = 0;
 	for (int k = 0; k < combLen; k++) {
@@ -141,18 +142,16 @@ void mrgInvCnt(struct Element L[], struct Element R[], int lenL, int lenR, struc
 		}
 		else {
 			merged[k] = R[j];
-			invCount += lenL - i;
+			*invCount += lenL - i;
 			j++;
 		}
 	}
 }
 
-struct Element* msInvCnt(struct Element array[], int len) {
-
+struct Element* msInvCnt(struct Element array[], int len, int* invCount) {
 	if (len == 1) {
 		return array;
 	}
-	
 	else {
 		struct Element* L = (struct Element*) malloc((len/2)*sizeof(struct Element));
 		struct Element* R = (struct Element*) malloc((len - len/2)*sizeof(struct Element));
@@ -165,10 +164,10 @@ struct Element* msInvCnt(struct Element array[], int len) {
 		}
 		
 
-		struct Element* LS = msInvCnt(L, len/2);
-		struct Element* RS = msInvCnt(R, len-len/2);
+		struct Element* LS = msInvCnt(L, len/2, invCount);
+		struct Element* RS = msInvCnt(R, len-len/2, invCount);
 		struct Element* merged = (struct Element*) malloc(len * sizeof(struct Element));
-		mrgInvCnt(LS, RS, len/2, len-len/2, merged);
+		mrgInvCnt(LS, RS, len/2, len-len/2, merged, invCount);
 
 		free(L);
 		free(R);
@@ -177,12 +176,11 @@ struct Element* msInvCnt(struct Element array[], int len) {
 }
 
 // QUICK SORT INVERSION COUNT
-struct Element* qsInvCnt(struct Element array[], int len) {
+struct Element* qsInvCnt(struct Element array[], int len, int* invCount) {
     if (len <= 1) {
         return array;
     }
     else {
-        extern int invCount;
         int pivotIndex = 0;
         int pivot = array[pivotIndex].v;
         struct Element* less = (struct Element*) malloc(len * sizeof(struct Element));
@@ -194,7 +192,7 @@ struct Element* qsInvCnt(struct Element array[], int len) {
             if (array[i].v < pivot) {
                 less[x] = array[i];
                 x++;
-                invCount += y + z;
+                *invCount += y + z;
             }
             else if (array[i].v > pivot) {
                 greater[y] = array[i];
@@ -203,12 +201,12 @@ struct Element* qsInvCnt(struct Element array[], int len) {
             else {
                 equal[z] = array[i];
                 z++;
-                invCount += y;
+                *invCount += y;
             }
         }
 
-        struct Element* sortedLeft = qsInvCnt(less, x);
-        struct Element* sortedRight = qsInvCnt(greater, y);
+        struct Element* sortedLeft = qsInvCnt(less, x, invCount);
+        struct Element* sortedRight = qsInvCnt(greater, y, invCount);
 
         struct Element* result = concat(sortedLeft, x, equal, z, sortedRight, y);
         free(sortedLeft);
