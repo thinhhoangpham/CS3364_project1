@@ -127,6 +127,30 @@ struct Element* concat(struct Element a[], int lenA, struct Element b[], int len
     }
 }
 
+// 3. SELECTION SORT
+struct Element* selectionSort(struct Element array[], int len) {
+    // Copy array
+    struct Element* sorted = (struct Element*) malloc(len * sizeof(struct Element));
+    int minIdx; struct Element temp;
+    for (int i = 0; i < len; i++) {
+        sorted[i] = array[i];
+    }
+    // find min
+    for (int i = 0; i < len; i++) {
+        minIdx = i;
+        for (int j = i+1; j < len; j++) {
+            if (sorted[j].v < sorted[minIdx].v) {
+                minIdx = j;
+            }
+        }
+        // swap min to the front
+        temp = sorted[minIdx];
+        sorted[minIdx] = sorted[i];
+        sorted[i] = temp;
+    }
+    return sorted;
+}
+
 
 
 // INVERSION COUNT ALGORITHMS
@@ -147,7 +171,6 @@ void mrgInvCnt(struct Element L[], struct Element R[], int lenL, int lenR, struc
 		}
 	}
 }
-
 struct Element* msInvCnt(struct Element array[], int len, int* invCount) {
 	if (len == 1) {
 		return array;
@@ -214,4 +237,20 @@ struct Element* qsInvCnt(struct Element array[], int len, int* invCount) {
 
         return result;
     }
+}
+
+// SELECTION SORT INVERSION COUNT
+int ssInvCnt(struct Element array[], int len) {
+    int minIdx, i, j, invCount = 0;
+    // find min
+    for (i = 0; i < len-1; i++) {
+        minIdx = i;
+        for (j = i+1; j < len; j++) {
+            if (array[i].v > array[j].v) {
+                minIdx = j;
+                invCount++;
+            }
+        }
+    }
+    return invCount;
 }
