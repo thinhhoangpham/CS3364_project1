@@ -121,4 +121,17 @@ int main() {
         printf("%d \t", ic_ms[i]);
     }
     printf("\n");
+
+    // Find best and worse sources by sorting the list
+    // The best source is on top and the worst source is bottom
+    struct Element source_rank[SOURCES];
+    for (int i = 0; i < SOURCES; i++) {
+        source_rank[i].p = i;
+        source_rank[i].v = ic_qs[i];
+    }
+    struct Element* sorted_ranks = quickSort(source_rank, SOURCES);
+
+    printf("Source %d is most reliable with %d inversions.\n", sorted_ranks[0].p+1, sorted_ranks[0].v);
+    printf("Source %d is least reliable with %d inversions.\n", sorted_ranks[SOURCES-1].p+1, sorted_ranks[SOURCES-1].v);
+
 }

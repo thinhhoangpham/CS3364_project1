@@ -151,8 +151,6 @@ struct Element* selectionSort(struct Element array[], int len) {
     return sorted;
 }
 
-
-
 // INVERSION COUNT ALGORITHMS
 
 // 1. MERGE SORT INVERSION COUNT
@@ -241,13 +239,11 @@ struct Element* qsInvCnt(struct Element array[], int len, int* invCount) {
 
 // SELECTION SORT INVERSION COUNT
 int ssInvCnt(struct Element array[], int len) {
-    int minIdx, i, j, invCount = 0;
+    int i, j, invCount = 0;
     // find min
     for (i = 0; i < len-1; i++) {
-        minIdx = i;
         for (j = i+1; j < len; j++) {
             if (array[i].v > array[j].v) {
-                minIdx = j;
                 invCount++;
             }
         }
