@@ -120,7 +120,7 @@ int main() {
     for (int i = 0; i < SOURCES; i++) {
         printf("%d \t", ic_ms[i]);
     }
-    printf("\n");
+    printf("\n------------------------------------------------------------------------\n");
 
     // Find best and worse sources by sorting the list
     // The best source is on top and the worst source is bottom
@@ -130,8 +130,14 @@ int main() {
         source_rank[i].v = ic_qs[i];
     }
     struct Element* sorted_ranks = quickSort(source_rank, SOURCES);
+    printf("Ranking:\n");
+    printf("Source\tInversions\n");
+    for (int i = 0; i < SOURCES; i++) {
+        printf("%d\t%d\n", sorted_ranks[i].p+1, sorted_ranks[i].v);
+    }
+    printf("------------------------------------------------------------------------\n");
 
     printf("Source %d is most reliable with %d inversions.\n", sorted_ranks[0].p+1, sorted_ranks[0].v);
     printf("Source %d is least reliable with %d inversions.\n", sorted_ranks[SOURCES-1].p+1, sorted_ranks[SOURCES-1].v);
-
+    printf("------------------------------------------------------------------------\n");
 }
